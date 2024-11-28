@@ -33,11 +33,10 @@ const array = [ // array tomb letrehozasa
 const table = document.createElement('table'); // Letrehozok egy table elemet, ami a tablazatomat fogja tartalmazni
 document.body.appendChild(table); // Hozzateszem bodyhoz
 
-for(let i = 0; i < array.length; i++) { // vegigiteralok az arrayen egy novekmenyes ciklus segitsegevel
-    const currentElement = array[i]; // block szinten definialok egy valtozot, amibe beleteszem az array aktualis ciklusvaltozo szamu elemet
+for(const currentElement of array) { // vegigiteralok az arrayen egy novekmenyes ciklus segitsegevel
     const row = document.createElement('tr'); // Letrehozok egy tr elemet
     
-    if (i === 0) { // Ha az első elem (fejléc)
+    if (currentElement === array[0]) { // Ha az első elem (fejléc)
         table.appendChild(document.createElement('thead')).appendChild(row); // Létrehozom a thead-et és hozzáadom a sort
         
         const cell1 = document.createElement('th'); // Letrehozok egy th elemet
@@ -52,8 +51,9 @@ for(let i = 0; i < array.length; i++) { // vegigiteralok az arrayen egy novekmen
         cell3.innerHTML = currentElement.loves; // A cella tartalma az aktualis elem loves tulajdonsaga
         cell3.colSpan = '2'; // Beallitom hogy 2 oszlopot foglaljon el
         row.appendChild(cell3);
-    } else {
-        if (i === 1) { // Ha a második elem
+    } 
+    else {
+        if (currentElement === array[1]) { // Ha a második elem
             table.appendChild(document.createElement('tbody')).appendChild(row); // Létrehozom a tbody-t és hozzáadom a sort
         } else {
             table.getElementsByTagName('tbody')[0].appendChild(row); // Hozzáadom a sort a tbody-hoz
