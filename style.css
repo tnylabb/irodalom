@@ -1,0 +1,23 @@
+th, td {
+    border: 1px solid black;
+    padding: 10px;
+}
+
+tbody td:first-child, tbody td:last-child {
+    background-color: rgb(77, 134, 187);
+}
+
+table {
+    border-collapse: collapse;
+}
+
+th:nth-child(2) {
+    background-color: rgb(177, 75, 75);
+}
+
+.error {
+    color: red;
+    border: 1px solid red;
+    margin-top: 5px;
+    padding: 5px;
+}
