@@ -32,7 +32,7 @@ const array = [ // array tomb letrehozasa
 
 function renderMenu() {
     const table = document.createElement('table'); // Letrehozok egy table elemet, ami a tablazatomat fogja tartalmazni
-    document.body.appendChild(table); // Hozzateszem bodyhoz
+    menuContainer.appendChild(table); // Hozzateszem bodyhoz
 
     for(const currentElement of array) { // vegigiteralok az arrayen egy novekmenyes ciklus segitsegevel
         const row = document.createElement('tr'); // Letrehozok egy tr elemet
@@ -83,4 +83,36 @@ function renderMenu() {
     }
 }
 
+
+const menuContainer = document.createElement('div'); // Letrehozok egy div elemet, ami a tablazatomat fogja tartalmazni
+document.body.appendChild(menuContainer); // Hozzateszem bodyhoz
+
 renderMenu(); // meghivom a renderMenu fuggvenyt
+
+form.addEventListener('submit', function(e) { 
+    e.preventDefault(); // megakadalyozom, hogy a bongeszo alapertelmezett mukodese lefusson submit eseten
+    
+    const koltoNevElement = document.getElementById('kolto_nev'); // elkerem a htmleleementet, amely a kolto_nev id-val van definialva
+    const korszakElement = document.getElementById('korszak'); // elkerem a htmleleementet, amely a korszak id-val van definialva
+    const szerelem1Element = document.getElementById('szerelem1'); // elkerem a htmleleementet, amely a szerelem1 id-val van definialva
+    const szerelem2Element = document.getElementById('szerelem2'); // elkerem a htmleleementet, amely a szerelem2 id-val van definialva
+    const masodikElement = document.getElementById('masodik'); // elkerem a htmleleementet, amely a masodik id-val van definialva
+    
+    const koltoNevValue = koltoNevElement.value; // a koltoNevElement value erteket beleteszem egy lokalis valtozoba
+    const korszakValue = korszakElement.value; // a korszakElement value erteket beleteszem egy lokalis valtozoba
+    const szerelem1Value = szerelem1Element.value; // a szerelem1Element value erteket beleteszem egy lokalis valtozoba
+    const szerelem2Value = masodikElement.checked ? szerelem2Element.value : undefined; // a szerelem2Element value erteket beleteszem egy lokalis valtozoba
+    
+    const newElement = { // definialok egy uj elementet
+        lastName: koltoNevValue, // az uj objektum lastName erteke a koltoNevValue lesz
+        period: korszakValue, // az uj objektum period erteke a korszakValue lesz
+        love1: szerelem1Value, // az uj objektum love1 erteke a szerelem1Value lesz
+        love2: szerelem2Value // az uj objektum love2 erteke a szerelem2Value lesz
+    }
+    
+    array.push(newElement); // hozzaadom az arrayhez az uj objektumot
+    
+    menuContainer.innerHTML = ""; // a tablazatom tartalmat ures stringre teszem egyenlove, ami azt eredmenyezi hogy torlodik a tabla
+    
+    renderMenu(); // ujra rendereles a fuggveny
+});
