@@ -83,7 +83,6 @@ function renderMenu() {
     }
 }
 
-
 const menuContainer = document.createElement('div'); // Letrehozok egy div elemet, ami a tablazatomat fogja tartalmazni
 document.body.appendChild(menuContainer); // Hozzateszem bodyhoz
 
@@ -92,6 +91,16 @@ renderMenu(); // meghivom a renderMenu fuggvenyt
 form.addEventListener('submit', function(e) { 
     e.preventDefault(); // megakadalyozom, hogy a bongeszo alapertelmezett mukodese lefusson submit eseten
     
+    const thisForm = e.currentTarget; // Az event currentTarget tulajdonsaga a formunkat tartalmazza, ezt eltaroljuk egy lokalis valtozoba
+    const errorHtmlElements = thisForm.querySelectorAll('.error'); // A formon beluli osszes error classal rendelkezo html elementet elkerem
+    
+    for(const errorElement of errorHtmlElements) { // vegigiteralunk a visszakapott errorHtmlElementeken
+        errorElement.innerHTML = ''; // toroljuk az aktualis elem tartalmat
+        errorElement.classList.remove('active');
+    }
+    
+    let valid = true; // a valid valtozo erteke igaz
+
     const koltoNevElement = document.getElementById('kolto_nev'); // elkerem a htmleleementet, amely a kolto_nev id-val van definialva
     const korszakElement = document.getElementById('korszak'); // elkerem a htmleleementet, amely a korszak id-val van definialva
     const szerelem1Element = document.getElementById('szerelem1'); // elkerem a htmleleementet, amely a szerelem1 id-val van definialva
@@ -103,16 +112,44 @@ form.addEventListener('submit', function(e) {
     const szerelem1Value = szerelem1Element.value; // a szerelem1Element value erteket beleteszem egy lokalis valtozoba
     const szerelem2Value = masodikElement.checked ? szerelem2Element.value : undefined; // a szerelem2Element value erteket beleteszem egy lokalis valtozoba
     
-    const newElement = { // definialok egy uj elementet
-        lastName: koltoNevValue, // az uj objektum lastName erteke a koltoNevValue lesz
-        period: korszakValue, // az uj objektum period erteke a korszakValue lesz
-        love1: szerelem1Value, // az uj objektum love1 erteke a szerelem1Value lesz
-        love2: szerelem2Value // az uj objektum love2 erteke a szerelem2Value lesz
+    if(koltoNevValue === '') {
+        const errorplace = document.getElementById('kolto_nev-error');
+        if(errorplace) {
+            errorplace.innerHTML = 'A költő nevének megadása kötelező!';
+            errorplace.classList.add('active'); // Hozzáadjuk az active class-t
+        }
+        valid = false;
     }
     
-    array.push(newElement); // hozzaadom az arrayhez az uj objektumot
+    if(korszakValue === '') {
+        const errorplace = document.getElementById('korszak-error');
+        if(errorplace) {
+            errorplace.innerHTML = 'A korszak megadása kötelező!';
+            errorplace.classList.add('active'); // Hozzáadjuk az active class-t
+        }
+        valid = false;
+    }
     
-    menuContainer.innerHTML = ""; // a tablazatom tartalmat ures stringre teszem egyenlove, ami azt eredmenyezi hogy torlodik a tabla
+    if(szerelem1Value === '') {
+        const errorplace = document.getElementById('szerelem1-error');
+        if(errorplace) {
+            errorplace.innerHTML = 'Az első szerelem megadása kötelező!';
+            errorplace.classList.add('active'); // Hozzáadjuk az active class-t
+        }
+        valid = false;
+    }
     
-    renderMenu(); // ujra rendereles a fuggveny
+    if(valid) {
+        const newElement = {
+            lastName: koltoNevValue,
+            period: korszakValue,
+            love1: szerelem1Value,
+            love2: szerelem2Value
+        }
+        
+        array.push(newElement);
+        menuContainer.innerHTML = "";
+        renderMenu();
+        thisForm.reset();
+    }
 });
