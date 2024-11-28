@@ -30,53 +30,57 @@ const array = [ // array tomb letrehozasa
     }    
 ]
 
-const table = document.createElement('table'); // Letrehozok egy table elemet, ami a tablazatomat fogja tartalmazni
-document.body.appendChild(table); // Hozzateszem bodyhoz
+function renderMenu() {
+    const table = document.createElement('table'); // Letrehozok egy table elemet, ami a tablazatomat fogja tartalmazni
+    document.body.appendChild(table); // Hozzateszem bodyhoz
 
-for(const currentElement of array) { // vegigiteralok az arrayen egy novekmenyes ciklus segitsegevel
-    const row = document.createElement('tr'); // Letrehozok egy tr elemet
-    
-    if (currentElement === array[0]) { // Ha az első elem (fejléc)
-        table.appendChild(document.createElement('thead')).appendChild(row); // Létrehozom a thead-et és hozzáadom a sort
+    for(const currentElement of array) { // vegigiteralok az arrayen egy novekmenyes ciklus segitsegevel
+        const row = document.createElement('tr'); // Letrehozok egy tr elemet
         
-        const cell1 = document.createElement('th'); // Letrehozok egy th elemet
-        cell1.innerHTML = currentElement.lastName; // A cella tartalma az aktualis elem lastname tulajdonsaga
-        row.appendChild(cell1);
-        
-        const cell2 = document.createElement('th'); // Letrehozok egy th elemet
-        cell2.innerHTML = currentElement.firstName; // A cella tartalma az aktualis elem firstName tulajdonsaga
-        row.appendChild(cell2);
-        
-        const cell3 = document.createElement('th'); // Letrehozok egy th elemet
-        cell3.innerHTML = currentElement.loves; // A cella tartalma az aktualis elem loves tulajdonsaga
-        cell3.colSpan = '2'; // Beallitom hogy 2 oszlopot foglaljon el
-        row.appendChild(cell3);
-    } 
-    else {
-        if (currentElement === array[1]) { // Ha a második elem
-            table.appendChild(document.createElement('tbody')).appendChild(row); // Létrehozom a tbody-t és hozzáadom a sort
-        } else {
-            table.getElementsByTagName('tbody')[0].appendChild(row); // Hozzáadom a sort a tbody-hoz
-        }
-        
-        const cell1 = document.createElement('td'); // Letrehozok egy td elemet
-        cell1.innerHTML = currentElement.lastName; // A cella tartalma az aktualis elem lastname tulajdonsaga
-        row.appendChild(cell1);
-        
-        const cell2 = document.createElement('td'); // Letrehozok egy td elemet
-        cell2.innerHTML = currentElement.period; // A cella tartalma az aktualis elem period tulajdonsaga
-        row.appendChild(cell2);
-        
-        const cell3 = document.createElement('td'); // Letrehozok egy td elemet
-        cell3.innerHTML = currentElement.love1 || currentElement.love; // A cella tartalma az aktualis elem love1 vagy love tulajdonsaga
-        row.appendChild(cell3);
-        
-        if (currentElement.love2) { // Ha van második szerelem
-            const cell4 = document.createElement('td'); // Letrehozok egy td elemet
-            cell4.innerHTML = currentElement.love2; // A cella tartalma az aktualis elem love2 tulajdonsaga
-            row.appendChild(cell4);
-        } else {
-            cell3.colSpan = '2'; // Ha nincs második szerelem, akkor az első szerelem cellája 2 oszlopot foglal el
+        if (currentElement === array[0]) { // Ha az első elem (fejléc)
+            table.appendChild(document.createElement('thead')).appendChild(row); // Létrehozom a thead-et és hozzáadom a sort
+            
+            const cell1 = document.createElement('th'); // Letrehozok egy th elemet
+            cell1.innerHTML = currentElement.lastName; // A cella tartalma az aktualis elem lastname tulajdonsaga
+            row.appendChild(cell1);
+            
+            const cell2 = document.createElement('th'); // Letrehozok egy th elemet
+            cell2.innerHTML = currentElement.firstName; // A cella tartalma az aktualis elem firstName tulajdonsaga
+            row.appendChild(cell2);
+            
+            const cell3 = document.createElement('th'); // Letrehozok egy th elemet
+            cell3.innerHTML = currentElement.loves; // A cella tartalma az aktualis elem loves tulajdonsaga
+            cell3.colSpan = '2'; // Beallitom hogy 2 oszlopot foglaljon el
+            row.appendChild(cell3);
+        } 
+        else {
+            if (currentElement === array[1]) { // Ha a második elem
+                table.appendChild(document.createElement('tbody')).appendChild(row); // Létrehozom a tbody-t és hozzáadom a sort
+            } else {
+                table.getElementsByTagName('tbody')[0].appendChild(row); // Hozzáadom a sort a tbody-hoz
+            }
+            
+            const cell1 = document.createElement('td'); // Letrehozok egy td elemet
+            cell1.innerHTML = currentElement.lastName; // A cella tartalma az aktualis elem lastname tulajdonsaga
+            row.appendChild(cell1);
+            
+            const cell2 = document.createElement('td'); // Letrehozok egy td elemet
+            cell2.innerHTML = currentElement.period; // A cella tartalma az aktualis elem period tulajdonsaga
+            row.appendChild(cell2);
+            
+            const cell3 = document.createElement('td'); // Letrehozok egy td elemet
+            cell3.innerHTML = currentElement.love1 || currentElement.love; // A cella tartalma az aktualis elem love1 vagy love tulajdonsaga
+            row.appendChild(cell3);
+            
+            if (currentElement.love2) { // Ha van második szerelem
+                const cell4 = document.createElement('td'); // Letrehozok egy td elemet
+                cell4.innerHTML = currentElement.love2; // A cella tartalma az aktualis elem love2 tulajdonsaga
+                row.appendChild(cell4);
+            } else {
+                cell3.colSpan = '2'; // Ha nincs második szerelem, akkor az első szerelem cellája 2 oszlopot foglal el
+            }
         }
     }
 }
+
+renderMenu(); // meghivom a renderMenu fuggvenyt
