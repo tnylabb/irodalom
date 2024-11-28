@@ -130,13 +130,15 @@ form.addEventListener('submit', function(e) {
         valid = false; // a valid valtozo erteket hamisra allitom
     }
     
-    if(masodikElement.checked && !szerelem2Value) { // ha be van pipalva a masodik szerelem checkbox es nincs kitoltve a szerelem2 mezo
-        const errorplace = document.getElementById('szerelem2-error'); // elkerem a szerelem2-error id-val rendelkezo html elemet
-        if(errorplace) { // ha letezik az error elem
-            errorplace.innerHTML = 'A második szerelem megadása kötelező!'; // belehelyezem a hibauzenet szoveget
-            errorplace.classList.add('active'); // hozzaadom az active classt a megjeleniteshez
+    if(masodikElement.checked) { // ha be van pipalva a masodik szerelem checkbox
+        if(!szerelem1Value || !szerelem2Value) { // ha barmelyik szerelem mezo ures
+            const errorplace = document.getElementById('szerelem1-error'); // elkerem a szerelem1-error id-val rendelkezo html elemet
+            if(errorplace) { // ha letezik az error elem
+                errorplace.innerHTML = 'A költőnek kötelező megadni a szerelemeit'; // belehelyezem a hibauzenet szoveget
+                errorplace.classList.add('active'); // hozzaadom az active classt a megjeleniteshez
+            }
+            valid = false; // a valid valtozo erteket hamisra allitom
         }
-        valid = false; // a valid valtozo erteket hamisra allitom
     }
     
     if(valid) { // ha a valid valtozo erteke igaz (minden validacio sikeres)
