@@ -30,6 +30,9 @@ const array = [ // array tomb letrehozasa
     }    
 ]
 
+const menuContainer = document.createElement('div'); // Letrehozok egy div elemet, ami a tablazatomat fogja tartalmazni
+document.body.appendChild(menuContainer); // Hozzateszem bodyhoz
+
 function renderMenu() {
     const table = document.createElement('table'); // Letrehozok egy table elemet, ami a tablazatomat fogja tartalmazni
     menuContainer.appendChild(table); // Hozzateszem bodyhoz
@@ -83,9 +86,6 @@ function renderMenu() {
     }
 }
 
-const menuContainer = document.createElement('div'); // Letrehozok egy div elemet, ami a tablazatomat fogja tartalmazni
-document.body.appendChild(menuContainer); // Hozzateszem bodyhoz
-
 renderMenu(); // meghivom a renderMenu fuggvenyt
 
 form.addEventListener('submit', function(e) { 
@@ -96,7 +96,7 @@ form.addEventListener('submit', function(e) {
     
     for(const errorElement of errorHtmlElements) { // vegigiteralunk a visszakapott errorHtmlElementeken
         errorElement.innerHTML = ''; // toroljuk az aktualis elem tartalmat
-        errorElement.classList.remove('active');
+        errorElement.classList.remove('active'); // eltavolitjuk az active classt
     }
     
     let valid = true; // a valid valtozo erteke igaz
@@ -106,47 +106,36 @@ form.addEventListener('submit', function(e) {
     const szerelem1Element = document.getElementById('szerelem1'); // elkerem a htmleleementet, amely a szerelem1 id-val van definialva
     const szerelem2Element = document.getElementById('szerelem2'); // elkerem a htmleleementet, amely a szerelem2 id-val van definialva
     const masodikElement = document.getElementById('masodik'); // elkerem a htmleleementet, amely a masodik id-val van definialva
-    
-    const koltoNevValue = koltoNevElement.value; // a koltoNevElement value erteket beleteszem egy lokalis valtozoba
-    const korszakValue = korszakElement.value; // a korszakElement value erteket beleteszem egy lokalis valtozoba
-    const szerelem1Value = szerelem1Element.value; // a szerelem1Element value erteket beleteszem egy lokalis valtozoba
-    const szerelem2Value = masodikElement.checked ? szerelem2Element.value : undefined; // a szerelem2Element value erteket beleteszem egy lokalis valtozoba
-    
-    if(koltoNevValue === '') { // ha a kolto_nev beviteli mezoje ures
-        const errorplace = document.getElementById('kolto_nev-error'); // elkerem a kolto_nev-error id-val rendelkezo html elemet
-        if(errorplace) { // ha letezik az error elem
-            errorplace.innerHTML = 'A költő nevének megadása kötelező!'; // belehelyezem a hibauzenet szoveget
-            errorplace.classList.add('active'); // hozzaadom az active classt a megjeleniteshez
-        }
-        valid = false; // a valid valtozo erteket hamisra allitom
+
+    // Validaljuk a kolto nev mezot
+    if(!validateFormHtmlField(koltoNevElement, "A költő nevének megadása kötelező!", 'kolto_nev-error')) {
+        valid = false; // ha a validacio nem sikerult, a valid valtozo erteket hamisra allitjuk
     }
-    
-    if(korszakValue === '') { // ha a korszak beviteli mezoje ures
-        const errorplace = document.getElementById('korszak-error'); // elkerem a korszak-error id-val rendelkezo html elemet
-        if(errorplace) { // ha letezik az error elem
-            errorplace.innerHTML = 'A korszak megadása kötelező!'; // belehelyezem a hibauzenet szoveget
-            errorplace.classList.add('active'); // hozzaadom az active classt a megjeleniteshez
-        }
-        valid = false; // a valid valtozo erteket hamisra allitom
+
+    // Validaljuk a korszak mezot
+    if(!validateFormHtmlField(korszakElement, "A korszak megadása kötelező!", 'korszak-error')) {
+        valid = false; // ha a validacio nem sikerult, a valid valtozo erteket hamisra allitjuk
     }
-    
+
     if(masodikElement.checked) { // ha be van pipalva a masodik szerelem checkbox
-        if(!szerelem1Value || !szerelem2Value) { // ha barmelyik szerelem mezo ures
-            const errorplace = document.getElementById('szerelem1-error'); // elkerem a szerelem1-error id-val rendelkezo html elemet
-            if(errorplace) { // ha letezik az error elem
-                errorplace.innerHTML = 'A költőnek kötelező megadni a szerelemeit'; // belehelyezem a hibauzenet szoveget
-                errorplace.classList.add('active'); // hozzaadom az active classt a megjeleniteshez
-            }
-            valid = false; // a valid valtozo erteket hamisra allitom
+        // Validaljuk mindket szerelem mezot
+        if(!validateFormHtmlField(szerelem1Element, "A költőnek kötelező megadni a szerelemeit", 'szerelem1-error') ||
+           !validateFormHtmlField(szerelem2Element, "A költőnek kötelező megadni a szerelemeit", 'szerelem1-error')) {
+            valid = false; // ha barmelyik validacio nem sikerult, a valid valtozo erteket hamisra allitjuk
         }
     }
     
     if(valid) { // ha a valid valtozo erteke igaz (minden validacio sikeres)
+        const koltoNevValue = koltoNevElement.value; // a koltoNevElement value erteket beleteszem egy lokalis valtozoba
+        const korszakValue = korszakElement.value; // a korszakElement value erteket beleteszem egy lokalis valtozoba
+        const szerelem1Value = szerelem1Element.value; // a szerelem1Element value erteket beleteszem egy lokalis valtozoba
+        const szerelem2Value = masodikElement.checked ? szerelem2Element.value : undefined; // a szerelem2Element value erteket beleteszem egy lokalis valtozoba, ha be van pipalva, egyebkent undefined
+
         const newElement = { // letrehozok egy uj objektumot
             lastName: koltoNevValue, // az uj objektum lastName tulajdonsaga a koltoNevValue erteket kapja
             period: korszakValue, // az uj objektum period tulajdonsaga a korszakValue erteket kapja
             love1: szerelem1Value || '-', // az uj objektum love1 tulajdonsaga a szerelem1Value erteket kapja, ha ures akkor '-' jelet
-            love2: masodikElement.checked ? szerelem2Value : undefined // az uj objektum love2 tulajdonsaga a szerelem2Value erteket kapja ha be van pipalva, egyebkent undefined
+            love2: szerelem2Value // az uj objektum love2 tulajdonsaga a szerelem2Value erteket kapja
         }
         
         array.push(newElement); // az uj objektumot hozzaadom az array tombhoz
@@ -155,3 +144,16 @@ form.addEventListener('submit', function(e) {
         thisForm.reset(); // visszaallitom az urlap alapertelmezett ertekeire
     }
 });
+
+function validateFormHtmlField(inputHtmlElement, errorMessage, errorElementId) {
+    let valid = true; // definialjuk a valid lokalis valtozot true ertekkel
+    if(inputHtmlElement.value === '') { // ha a parameterben kapott beviteli mezo ures
+        const errorplace = document.getElementById(errorElementId); // elkerem az adott id-val rendelkezo error elemet
+        if(errorplace) { // ha letezik az error elem
+            errorplace.innerHTML = errorMessage; // belehelyezem a hibauzenet szoveget
+            errorplace.classList.add('active'); // hozzaadom az active classt a megjeleniteshez
+        }
+        valid = false; // a valid valtozo erteket hamisra allitom
+    }
+    return valid; // visszaterek a valid valtozoval
+}
